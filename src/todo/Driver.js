@@ -37,7 +37,7 @@ class Driver extends React.Component{
             },
             (error) => {
               this.setState({
-                isLoaded: true,
+                isLoaded: false,
                 error
               });
             }
@@ -113,7 +113,8 @@ class Driver extends React.Component{
       </ButtonToolbar>
         </tbody>
         
-        );
+        )
+            
     }
   
 }

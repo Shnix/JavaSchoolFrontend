@@ -1,6 +1,18 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
+import Title from './Title.png'
+import Footer from './Footer'
+import {Button, ButtonToolbar} from 'react-bootstrap';
+import UpdateDriverStatus from './UpdateDriverStatus'
+import UpdateCargoStatus from './UpdateCargoStatus';
 
 const api = 'http://localhost:8080/driverinfo/'
+
+const delApi = 'http://localhost:8080/driverinfo/done/'
+
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 class DriverInfo extends React.Component {
 
@@ -8,69 +20,79 @@ class DriverInfo extends React.Component {
         super(props);
         this.state={
             driver:null,
+            addModalShow : false,
+            updateModalShow : false,
             isLoaded: false,
             error:null
         }
+        this.componentDidMount=this.componentDidMount.bind(this)
     }
 
+    logout(){
+      localStorage.removeItem('token');
+      sleep(500);
+  }
+
+  markDone(id) {
+    if(window.confirm('Are you sure?')){
+    fetch(delApi+id, {
+      method: "DELETE",
+      header: {'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+    }).then(function(response) { 
+      if(!response.ok){
+      return response.json(); 
+    }
+    else{
+      alert("Order marked as done")
+    }
+  })
+    .then(function(data) {
+      var message = data.message;
+      alert(message)
+  })
+  .catch(e=> {
+  })
+  };
+    sleep(500).then(() => {
+      this.componentDidMount();
+    })
+  }
+
     componentDidMount() {
-        fetch(api+80)
+        fetch(api+116)
           .then((response) =>{
             return response.json();
           })
           .then((data) => {
               this.setState({driver:data,isLoaded:true})
+              console.log(data)
           });
       }
 
   render() {
-
+    let addModalClose =()=> this.setState({addModalShow:false});
+    let updateModalClose =()=>this.setState({updateModalShow:false});
     if(!this.state.isLoaded){
         return <div>wait</div>
     }
     else{
     return(
         <body>
-            
-        <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-          <a class="navbar-brand" href="#">Navbar</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-    
-          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-              </li>
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-                <div class="dropdown-menu" aria-labelledby="dropdown01">
-                  <a class="dropdown-item" href="#">Action</a>
-                  <a class="dropdown-item" href="#">Another action</a>
-                  <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-              </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-          </div>
-        </nav>
+        <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+  <div class="container">
+    <a class="navbar-brand" href="/drivers">
+          <img src={Title} alt=""/>
+        </a>
+  </div>
+          <Link to="/"><button class="btn btn-outline-primary" onClick={this.logout}>Sign out</button></Link>
+        </div>
     
         <main role="main">
           <div class="jumbotron">
             <div class="container">
-              <h1 class="display-3">Hello, world!</h1>
-              <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
-              <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more »</a></p>
+              <h1 class="display-3">Hello, {this.state.driver.firstName} {this.state.driver.lastName}</h1>
             </div>
           </div>
     
@@ -80,20 +102,33 @@ class DriverInfo extends React.Component {
               <div class="col-md-4">
                 <h2>Driver Info</h2>
                 <p>Driver ID : {this.state.driver.id}</p>
-                <p>Vehicle Name : {this.state.driver.vehicleName}</p>         
+                <p>Vehicle Name : {this.state.driver.vehicleName!=null?this.state.driver.vehicleName:'No Vehicle'}</p>         
+                <p>Status : {this.state.driver.status}</p>           
+                <a class="btn btn-info" onClick={()=>this.setState({updateModalShow:true})}>
+                    Change Status
+                    </a>
+                    <UpdateDriverStatus update={this.componentDidMount} id={this.state.driver.id} show={this.state.updateModalShow} onHide={updateModalClose}/>
+              </div>
+
+              <div class="col-md-4">
+                <h2>Cargo Info</h2>
+                <p>Cargo : {this.state.driver.cargoName!=null?this.state.driver.cargoName:'No cargo'}</p>      
+                <p>Cargo Weight : {this.state.driver.cargoWeight!=null?this.state.driver.cargoWeight:' '}</p>    
+                <p>Cargo Status : {this.state.driver.cargoStatus!=null?this.state.driver.cargoStatus:' '}</p>    
+                <p><a class="btn btn-info" onClick={()=>this.setState({addModalShow:true})}>Change Cargo Status</a></p>     
+                <UpdateCargoStatus update={this.componentDidMount} id={this.state.driver.id} show={this.state.addModalShow} onHide={addModalClose}/> 
+              </div>
+
+              <div class="col-md-4">
+                <h2>Order Info</h2>
+                <p>Order ID : {this.state.driver.orderId!=null?this.state.driver.orderId:'No Order'}</p>
+                <p>From : {this.state.driver.startCity!=null?this.state.driver.startCity:' '}</p>         
+                <p>To : {this.state.driver.destinationCity!=null?this.state.driver.destinationCity:' '}</p>    
+                <p><a class="btn btn-info" onClick={()=>this.markDone(this.state.driver.orderId)} role="button">Mark as done</a></p>      
+              </div>
+
             
-                <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-              </div>
-              <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-              </div>
-              <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details »</a></p>
-              </div>
+              
             </div>
     
             <hr/>
@@ -102,9 +137,7 @@ class DriverInfo extends React.Component {
     
         </main>
     
-        <footer class="container">
-          <p>© Company 2017-2018</p>
-        </footer>
+       <Footer/>
     </body>
     )
 }

@@ -5,6 +5,7 @@ import Vehicles from './Vehicles'
 import Orders from './Orders'
 import Home from '../home/Home'
 import DriverInfo from './DriverInfo'
+import CompleteOrders from './CompleteOrders';
 
 
 const Router = (props) => (
@@ -14,6 +15,7 @@ const Router = (props) => (
           <PrivateRoute path='/orders' component={Orders} />
           <PrivateRoute path='/drivers' component={Drivers} />
           <PrivateRoute path='/driverinfo' component={DriverInfo}/>
+          <PrivateRoute path='/completeOrders' component={CompleteOrders}/>
     </Switch>
 
 )

@@ -22,7 +22,7 @@ logout(){
         return(
           <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="/drivers">
+    <a class="navbar-brand" href="/driverinfo">
           <img src={Title} alt=""/>
         </a>
   </div>
@@ -30,6 +30,7 @@ logout(){
             <a class="p-2 text-dark" href="http://localhost:3000/orders">Orders</a>
             <a class="p-2 text-dark" href="http://localhost:3000/drivers">Drivers</a>
             <a class="p-2 text-dark" href="http://localhost:3000/vehicles">Vehicles</a>
+            <a class="p-2 text-dark" href="http://localhost:3000/completeOrders">Complete Orders</a>
           </nav>
           <Link to="/"><button class="btn btn-outline-primary" onClick={this.logout}>Sign out</button></Link>
         </div>
