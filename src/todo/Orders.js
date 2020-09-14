@@ -4,7 +4,7 @@ import {Button, ButtonToolbar} from 'react-bootstrap';
 import AddOrder from './AddOrder';
 import Footer from './Footer'
 
-const api = 'http://localhost:8080/orders/'
+const api = 'http://localhost:8081/orders/'
 
 
 class Orders extends React.Component {

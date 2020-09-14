@@ -20,13 +20,13 @@ const Router = (props) => (
 
 )
 
-const isAuthenticated = localStorage.getItem('token');
+const isAdminAuthenticated = localStorage.getItem('token');
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props =>
-        isAuthenticated ? (
+        isAdminAuthenticated ? (
         <Component {...props} />
       ) : (
         <Redirect

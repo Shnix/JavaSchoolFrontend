@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-const api = 'http://localhost:8080/drivers/update/'
+const api = 'http://localhost:8081/drivers/update/'
 
 
 class UpdateButton extends React.Component {
@@ -12,7 +12,7 @@ class UpdateButton extends React.Component {
 
 handleSubmit(e) {
   e.preventDefault();
-  fetch(api+this.props.id, {
+  fetch(api+this.props.item.id, {
     method: 'PUT',
     headers:{
       'Accept': 'application/json',
@@ -23,7 +23,7 @@ handleSubmit(e) {
       firstName:e.target.firstName.value,
       lastName:e.target.lastName.value,
       driverType:null,
-      workingHours:0,
+      workingHours:e.target.workingHours.value,
       status:null,
       currentCity:e.target.currentCity.value,
       vehicle:null,
@@ -70,13 +70,15 @@ handleSubmit(e) {
               <Form onSubmit={this.handleSubmit}>
                 <Form.Group controlId="first">
                 <Form.Label>Id</Form.Label>
-                  <Form.Control type="text" name="id" required disabled defaultValue={this.props.id} placeholder="id"/>
+                  <Form.Control type="text" name="id" required disabled defaultValue={this.props.item.id} placeholder="id"/>
                   <Form.Label>First Name</Form.Label>
-                  <Form.Control type="text" name="firstName" required placeholder="First Name"/>
+                  <Form.Control type="text" name="firstName" required defaultValue={this.props.item.firstName} placeholder="First Name"/>
                   <Form.Label>Last Name</Form.Label>
-                  <Form.Control type="text" name="lastName" required placeholder="Last Name"/>
+                  <Form.Control type="text" name="lastName" required defaultValue={this.props.item.lastName} placeholder="Last Name"/>
                   <Form.Label>City</Form.Label>
-                  <Form.Control type="text" name="currentCity" required placeholder="City"/>
+                  <Form.Control type="text" name="currentCity" required defaultValue={this.props.item.currentCity} placeholder="City"/>
+                  <Form.Label>Working Hours</Form.Label>
+                  <Form.Control type="text" name="workingHours" required defaultValue={this.props.item.workingHours} placeholder="Working Hours"/>
                 </Form.Group>
                 <Form.Group>
                   <Button variant="primary" type="submit">

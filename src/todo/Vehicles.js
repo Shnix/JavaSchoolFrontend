@@ -5,7 +5,7 @@ import {Button, ButtonToolbar} from 'react-bootstrap';
 import AddVehicle from './AddVehicle';
 import Footer from './Footer';
 
-const api = 'http://localhost:8080/vehicles/'
+const api = 'http://localhost:8081/vehicles/'
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -88,7 +88,7 @@ class Vehicles extends React.Component {
         return(
             <div>
           <Header/>
-          <table class="table table-striped table-sm">
+          <table class="table table-striped table-sm ">
               <thead>
                 <tr>
                   <th>id</th>
@@ -119,7 +119,7 @@ class Vehicles extends React.Component {
                   <Button variant='outline-success' onClick={()=>this.setState({updateModalShow:true,id:item.id})}>
                     Update
                     </Button>
-                    <UpdateVehicle update={this.componentDidMount} id={this.state.id} show={this.state.updateModalShow} onHide={updateModalClose}/></th>
+                    <UpdateVehicle update={this.componentDidMount} item={item} show={this.state.updateModalShow} onHide={updateModalClose}/></th>
                 </tr>
             ))}
             <ButtonToolbar>
@@ -131,6 +131,7 @@ class Vehicles extends React.Component {
         </tbody>
         </table>
         <Footer/>
+        
         </div>
         );
     }

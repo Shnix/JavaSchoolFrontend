@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-const api = 'http://localhost:8080/orders/add'
+const api = 'http://localhost:8081/orders/add'
 
 
 class AddOrder extends React.Component {

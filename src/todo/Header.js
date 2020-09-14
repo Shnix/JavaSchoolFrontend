@@ -22,7 +22,7 @@ logout(){
         return(
           <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="/driverinfo">
+    <a class="navbar-brand" >
           <img src={Title} alt=""/>
         </a>
   </div>

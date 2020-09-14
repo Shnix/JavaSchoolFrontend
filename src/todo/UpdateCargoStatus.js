@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-const api = 'http://localhost:8080/driverinfo/updateCargo/'
+const api = 'http://localhost:8081/driverinfo/updateCargo/'
 
 
 class UpdateCargoStatus extends React.Component {

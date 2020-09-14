@@ -3,7 +3,7 @@ import UpdateButton from "./UpdateButton"
 import {Button, ButtonToolbar} from 'react-bootstrap';
 import AddButton from './AddButton';
 
-const api = 'http://localhost:8080/drivers/'
+const api = 'http://localhost:8081/drivers/'
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -87,7 +87,7 @@ class Driver extends React.Component{
           
         <tbody>
             {this.state.items.map(item=>(
-                <tr index={item.id} delete={this.deleteBlock}>
+                <tr index={item.id} delete={this.deleteBlock} >
                 <td>{item.id}</td>
                 <td>{item.firstName}</td>
                 <td>{item.lastName}</td>
@@ -102,7 +102,7 @@ class Driver extends React.Component{
                   <Button variant='outline-success' onClick={()=>this.setState({updateModalShow:true,id:item.id})}>
                     Update
                     </Button>
-                    <UpdateButton update={this.componentDidMount} id={this.state.id} show={this.state.updateModalShow} onHide={updateModalClose}/></th>
+                    <UpdateButton update={this.componentDidMount} item={item} show={this.state.updateModalShow} onHide={updateModalClose}/></th>
                 </tr>
             ))}
             <ButtonToolbar>

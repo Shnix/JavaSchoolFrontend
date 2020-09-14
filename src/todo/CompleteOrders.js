@@ -1,11 +1,11 @@
 import React from 'react'
 import Header from './Header'
-import UpdateVehicle from "./UpdateVehicle"
-import {Button, ButtonToolbar} from 'react-bootstrap';
-import AddVehicle from './AddVehicle';
 import Footer from './Footer';
+import BootstrapTable from 'react-bootstrap-table-next'
+import axios from 'axios';  
+import paginationFactory from 'react-bootstrap-table2-paginator';
 
-const api = 'http://localhost:8080/complete'
+const api = 'http://localhost:8081/complete'
 
 
 
@@ -17,31 +17,58 @@ class CompleteOrders extends React.Component {
           error: null,
           isLoaded: false,
           items: [],
-          id:0
+          id:0, 
+          columns: [        {            
+                              dataField: 'orderId',            
+                              text: 'Id'  ,
+                              sort: true          
+                            },             
+                            {           
+                              dataField: 'startCity',  
+                              text: 'Start City',  
+                              sort:true  
+                            }, {  
+                              dataField: 'destinationCity',  
+                              text: 'Destination City',  
+                              sort: true  
+                            },  
+                            {  
+                              dataField: 'vehicleName',  
+                              text: 'Vehicle',  
+                              sort: true  
+                            },  
+                            {  
+                              dataField: 'cargoName',
+                              text: 'Cargo',  
+                              sort: true  
+                            },  
+                            {  
+                              dataField: 'cargoWeight',  
+                              text: 'Cargo Weight',  
+                              sort: true  
+                            }]
         };
         this.componentDidMount=this.componentDidMount.bind(this)
       }
 
 
     
-      componentDidMount() {
-        fetch(api)
-          .then(res => res.json())
-          .then(
-            (result) => {
-              this.setState({
-                isLoaded: true,
-                items: result
-              });
-            },
-            (error) => {
-              this.setState({
-                isLoaded: false,
-                error
-              });
-            }
-          )
-      }
+      componentDidMount() {    
+        
+                        axios.get(api).then(response => {    
+        
+                          console.log(response.data);    
+        
+                          this.setState({    
+        
+                                items: response.data,
+                                isLoaded: true  
+        
+                          });    
+        
+                        });    
+        
+                      } 
 
       
 
@@ -53,30 +80,34 @@ class CompleteOrders extends React.Component {
         return(
             <div>
           <Header/>
-          <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>id</th>
-                  <th>Start City</th>
-                  <th>Destination</th>
-                  <th>Vehicle Name</th>
-                  <th>Cargo</th>
-                  <th>Cargo Weight</th>
-                </tr>
-              </thead>
-        <tbody>
-            {this.state.items.map(item=>(
-                <tr index={item.id}>
-                <td>{item.orderId}</td>
-                <td>{item.startCity}</td>
-                <td>{item.destinationCity}</td>
-                <td>{item.vehicleName}</td>
-                <td>{item.cargoName}</td>
-                <td>{item.cargoWeight}</td>
-                </tr>
-            ))}
-        </tbody>
-        </table>
+                        <div class="row" className="hdr">    
+
+                        <div class="col-sm-12 btn btn-info">    
+                        Complete Orders  
+
+                         </div>    
+
+                          </div>    
+
+                        <div  style={{ marginTop: 20 }}>  
+
+                        <BootstrapTable   
+
+                        striped  
+
+                        hover  
+
+                        keyField='id'   
+
+                        data={ this.state.items }   
+
+                        columns={ this.state.columns}
+                          
+                        pagination={ paginationFactory() }
+                        
+                         >
+                           </BootstrapTable>  
+                      </div> 
         <Footer/>
         </div>
         );

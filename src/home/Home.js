@@ -3,15 +3,18 @@ import {Redirect} from 'react-router-dom'
 import './Home.css'
 import Logo from './Logo.png'
 
-const api = 'http://localhost:8080/security/'
+const api = 'http://localhost:8081/security/signin'
 
 class Home extends React.Component {
 
     constructor(props){
       super(props);
       this.state={
-        user:null
+        id:null,
+        role:null
       }
+      this.handleFormSubmit=this.handleFormSubmit.bind(this)
+  
     }
 
     componentDidMount(){
@@ -21,7 +24,7 @@ class Home extends React.Component {
     handleFormSubmit(e){
       e.preventDefault()
       fetch(api, {
-        method: 'PUT',
+        method: 'POST',
         headers:{
           'Accept': 'application/json',
           'Content-Type': 'application/json'
@@ -32,22 +35,34 @@ class Home extends React.Component {
           password:e.target.password.value,
           role:null
         })
-      }).then(function(response) { 
-        if(response.ok){
-          localStorage.setItem('token','1');
-          document.location.reload(true);
-      }
-      else{
-        alert("Invalid Login & Password")
-      }
-    })
-      
+      }).then((response) =>{
+        if(!response.ok){
+          alert("Invalid Login or Password");
+        }
+        else
+        response.json().then((result)=>{
+          console.log(result)
+          this.setState({
+            id:result.id,
+            role:result.role
+          })
+          localStorage.setItem("token",result.token)
+          window.location.reload()
+        
+        })
+      })
+    
     }
   
     render() {
-      if(localStorage.getItem("token")){
+      
+        if(this.state.role=="ROLE_ADMIN"){
         return <Redirect to="/drivers" />
-      }
+        }
+        else if(this.state.role=="ROLE_DRIVER"){
+          return <Redirect to={{pathname: '/driverinfo',state: {id:this.state.id} }}/>
+        }
+      
       return(
         <div class="wrapper fadeInDown">
   <div id="formContent">
@@ -61,6 +76,7 @@ class Home extends React.Component {
       <input type="password" id="password" class="fadeIn third" name="password" placeholder="password" required/>
       <input type="submit" class="fadeIn fourth" value="Log In"/>
     </form>
+    <div><h>{this.state.role}</h></div>
 
   </div>
 </div>

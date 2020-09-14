@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-const api = 'http://localhost:8080/vehicles/update/'
+const api = 'http://localhost:8081/vehicles/update/'
 
 
 class UpdateVehicle extends React.Component {
@@ -12,7 +12,7 @@ class UpdateVehicle extends React.Component {
 
 handleSubmit(e) {
   e.preventDefault();
-  fetch(api+this.props.id, {
+  fetch(api+this.props.item.id, {
     method: 'PUT',
     headers:{
       'Accept': 'application/json',
@@ -69,13 +69,13 @@ handleSubmit(e) {
               <Form onSubmit={this.handleSubmit}>
               <Form.Group controlId="first">
                 <Form.Label>Id</Form.Label>
-                  <Form.Control type="text" name="id" required disabled defaultValue={this.props.id} placeholder="id"/>
+                  <Form.Control type="text" name="id" required disabled defaultValue={this.props.item.id} placeholder="id"/>
                   <Form.Label>Name</Form.Label>
-                  <Form.Control type="text" name="name" required placeholder="Name"/>
+                  <Form.Control type="text" name="name" required defaultValue={this.props.item.name} placeholder="Name"/>
                   <Form.Label>Capacity(Tons)</Form.Label>
-                  <Form.Control type="text" name="capacityInTons" required placeholder="Capacity"/>
+                  <Form.Control type="number" name="capacityInTons" required defaultValue={this.props.item.capacityInTons} placeholder="Capacity"/>
                   <Form.Label>City</Form.Label>
-                  <Form.Control type="text" name="currentCity" required placeholder="City"/>
+                  <Form.Control type="text" name="currentCity" required defaultValue={this.props.item.currentCity} placeholder="City"/>
                   <Form.Label>Vehicle Condition</Form.Label>
                   <Form.Control as="select" type="text" name="condition" required placeholder="Vehicle Condition">
                     <option>Ok</option>

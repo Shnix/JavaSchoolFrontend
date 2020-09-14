@@ -6,13 +6,14 @@ import {Button, ButtonToolbar} from 'react-bootstrap';
 import UpdateDriverStatus from './UpdateDriverStatus'
 import UpdateCargoStatus from './UpdateCargoStatus';
 
-const api = 'http://localhost:8080/driverinfo/'
+const api = 'http://localhost:8081/driverinfo/'
 
-const delApi = 'http://localhost:8080/driverinfo/done/'
+const delApi = 'http://localhost:8081/driverinfo/done/'
 
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
+
 
 class DriverInfo extends React.Component {
 
@@ -27,6 +28,8 @@ class DriverInfo extends React.Component {
         }
         this.componentDidMount=this.componentDidMount.bind(this)
     }
+
+    
 
     logout(){
       localStorage.removeItem('token');
@@ -61,7 +64,7 @@ class DriverInfo extends React.Component {
   }
 
     componentDidMount() {
-        fetch(api+116)
+        fetch(api+this.props.location.state.id)
           .then((response) =>{
             return response.json();
           })
@@ -82,7 +85,7 @@ class DriverInfo extends React.Component {
         <body>
         <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
   <div class="container">
-    <a class="navbar-brand" href="/drivers">
+    <a class="navbar-brand">
           <img src={Title} alt=""/>
         </a>
   </div>

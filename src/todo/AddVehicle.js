@@ -1,7 +1,7 @@
 import React from 'react';
 import {Modal,Button, Row, Col, Form} from 'react-bootstrap';
 
-const api = 'http://localhost:8080/vehicles/add'
+const api = 'http://localhost:8081/vehicles/add'
 
 
 class AddButton extends React.Component {
@@ -79,7 +79,7 @@ handleSubmit(e) {
                     <option>Boat</option>
                   </Form.Control>
                   <Form.Label>Capacity(Tons)</Form.Label>
-                  <Form.Control type="text" name="capacityInTons" required placeholder="Capacity"/>
+                  <Form.Control type="number" name="capacityInTons" required placeholder="Capacity"/>
                   <Form.Label>City</Form.Label>
                   <Form.Control type="text" name="currentCity" required placeholder="City"/>
                 </Form.Group>
